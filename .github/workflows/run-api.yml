@@ -1,0 +1,33 @@
+yaml
+name: Run Clean API
+
+on:
+  push:
+    branches: [ 0xBabyAlien ]
+  # You can also set up an automatic schedule, for example, every day:
+  # schedule:
+  #   - cron: '0 0 * * *'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+
+    - name: Install required libraries
+      run: |
+        pip install openai python-dotenv
+
+    - name: Run Python program
+      env:
+        # This is where the GitHub Secret is called and assigned to the environment variable
+        CLEAN_API_KEY: ${{ secrets.CLEAN_API_KEY }}
+      run: |
+        python main.py
